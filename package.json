@@ -9,19 +9,35 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "clsx": "^2.1.0",
+    "framer-motion": "^11.0.8",
+    "highlight.js": "^11.9.0",
+    "lowlight": "^3.1.0",
+    "lucide-react": "^0.354.0",
+    "next": "14.1.3",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.1.3"
+    "rehype-highlight": "^7.0.0",
+    "rehype-slug": "^6.0.0",
+    "rehype-stringify": "^10.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.0",
+    "rss": "^1.2.2",
+    "tailwind-merge": "^2.2.1",
+    "unified": "^11.0.4"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@octokit/types": "^12.6.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/rss": "^0.0.32",
     "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.3",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.1.3"
+    "typescript": "^5"
   }
 }

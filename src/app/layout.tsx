@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Cabin, Fragment_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/libs/utils";
+import { Navbar } from "./Navbar";
+import { Footer } from "./Footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const sans = Cabin({ subsets: ["latin"], variable: "--font-sans" });
+const mono = Fragment_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={cn("font-sans", sans.variable, mono.variable)}>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

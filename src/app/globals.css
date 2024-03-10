@@ -28,7 +28,7 @@
 
 @layer base {
   body {
-    @apply bg-green text-green-foreground;
+    @apply bg-orange text-green-foreground;
     font-feature-settings:
       "rlig" 1,
       "calt" 1;

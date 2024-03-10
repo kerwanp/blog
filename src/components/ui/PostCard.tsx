@@ -19,11 +19,11 @@ export const PostCard = ({ post }: { post: Post }) => {
     <MotionLink
       href={`/blog/${post.slug}`}
       variants={animation}
-      className="border-black border-4 shadow-black shadow-xl rounded-xl bg-blue p-2 hover:shadow-lg transition-shadow active:hover:shadow-none"
+      className="border-black border-4 shadow-black shadow-xl rounded-xl bg-white hover:shadow-lg transition-shadow active:hover:shadow-none"
     >
       <div>
         {post.cover_image && (
-          <div className="border-2 border-black rounded-lg overflow-hidden mb-2">
+          <div className="border-2 border-black">
             <Image
               src={post.cover_image}
               alt={post.title}
@@ -33,7 +33,7 @@ export const PostCard = ({ post }: { post: Post }) => {
           </div>
         )}
       </div>
-      <div className="p-2">
+      <div className="p-4">
         <h2 className="font-bold text-xl mb-2">{post.title}</h2>
         <p>{post.description}</p>
       </div>

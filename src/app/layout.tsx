@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Cabin, Fragment_Mono, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import { Cabin, Dela_Gothic_One, Fragment_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/libs/utils";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 
+const wide = Dela_Gothic_One({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-wide",
+});
 const sans = Cabin({ subsets: ["latin"], variable: "--font-sans" });
 const mono = Fragment_Mono({
   subsets: ["latin"],
@@ -24,7 +30,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("font-sans", sans.variable, mono.variable)}>
+      <Analytics />
+      <body
+        className={cn("font-sans", sans.variable, mono.variable, wide.variable)}
+      >
         <Navbar />
         {children}
         <Footer />

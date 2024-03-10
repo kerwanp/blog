@@ -44,7 +44,7 @@ export const Navbar = () => {
   const pathname = usePathname();
   return (
     <div className="container py-6">
-      <nav className="bg-orange rounded-xl text-orange-foreground shadow-black shadow-2xl border-black border-4 p-4 flex items-center justify-between">
+      <nav className="bg-white rounded-xl text-orange-foreground shadow-black shadow-2xl border-black border-4 p-4 flex items-center justify-between">
         <div className="flex gap-4 pl-2">
           {items.map((item) => (
             <Link
@@ -72,7 +72,7 @@ export const Navbar = () => {
               key={social.url}
               href={social.url}
               target="_blank"
-              className="block shadow-lg shadow-black border-2 border-black rounded-full bg-white p-2 hover:shadow-md active:shadow-none transition-all"
+              className="block shadow-lg shadow-black border-2 border-black rounded-full bg-orange p-2 hover:shadow-md active:shadow-none transition-all"
             >
               {social.icon}
             </Link>

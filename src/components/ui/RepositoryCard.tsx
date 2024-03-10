@@ -19,7 +19,7 @@ export const RepositoryCard = ({ repository }: { repository: Repository }) => {
     <MotionLink
       href={repository.url}
       variants={animation}
-      className="border-black border-4 shadow-black shadow-xl rounded-xl bg-blue p-4 flex flex-col hover:shadow-lg transition-shadow active:hover:shadow-none"
+      className="border-black border-4 shadow-black shadow-xl rounded-xl bg-white p-4 flex flex-col hover:shadow-lg transition-shadow active:hover:shadow-none"
     >
       <div className="flex-1">
         <h2 className="font-bold text-xl mb-0">{repository.name}</h2>

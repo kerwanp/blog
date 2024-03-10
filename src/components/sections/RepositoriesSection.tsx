@@ -27,15 +27,12 @@ export const RepositoriesSection = async () => {
   const repositories = await fetchRepositories(100).then((r) => r.slice(0, 8));
   return (
     <section className="container">
-      <MotionH2
-        variants={titleAnimation}
-        className="text-center text-2xl shadow-black shadow-xl rounded-xl bg-lime border-black border-4 px-6 py-2 mb-4 font-bold"
-      >
+      <MotionH2 variants={titleAnimation} className="text-4xl font-wide mb-4">
         My unfamous repositories
       </MotionH2>
       <MotionDiv
         variants={animations}
-        className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-4"
+        className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
       >
         {repositories.map((repository) => (
           <RepositoryCard key={repository.id} repository={repository} />

@@ -27,7 +27,7 @@ export default async function Page({ params: { slug } }: PageProps) {
             </div>
           )}
 
-          <div className="border-black border-2 shadow-black shadow-xl rounded-full p-4 px-6 bg-orange mb-6">
+          <div className="border-black border-2 shadow-black shadow-xl rounded-full p-4 px-24 bg-red mb-6">
             <h1 className="font-bold text-2xl">{post.title}</h1>
           </div>
         </div>

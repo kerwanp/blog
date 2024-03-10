@@ -34,11 +34,11 @@ export const HeroSection = () => {
     <section className="container mx-auto mb-12">
       <MotionDiv
         variants={containerAnimation}
-        className="shadow-black shadow-xl border-black border-4 rounded-xl p-12 bg-red"
+        className="shadow-black shadow-xl border-black border-4 rounded-xl p-6 lg:p-12 bg-red"
       >
-        <div className="flex">
+        <div className="flex flex-col-reverse gap-y-6 md:flex-row items-center">
           <div className="flex-1 flex flex-col justify-end items-start">
-            <div className="font-bold text-5xl mb-8">
+            <div className="font-bold text-3xl lg:text-5xl mb-8">
               <MotionDiv variants={textAnimation}>Hi! 👋</MotionDiv>
               <MotionDiv variants={textAnimation}>
                 I&apos;m <h1 className="text-white inline">Martin Paucot</h1>,

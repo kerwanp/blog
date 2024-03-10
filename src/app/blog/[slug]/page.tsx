@@ -98,7 +98,7 @@ export default async function Page({ params: { slug } }: PageProps) {
 
           <MotionDiv
             variants={itemAnimation}
-            className="border-black border-2 shadow-black shadow-xl rounded-full p-4 px-24 bg-red mb-6"
+            className="border-black border-2 shadow-black shadow-xl rounded-xl lg:rounded-full p-4 px:6 lg:px-12 xl:px-24 bg-red mb-6 text-center"
           >
             <h1 className="font-bold text-2xl">{post.title}</h1>
           </MotionDiv>
@@ -107,7 +107,7 @@ export default async function Page({ params: { slug } }: PageProps) {
       <article className="container">
         <MotionDiv
           variants={itemAnimation}
-          className="border-black border-4 shadow-xl shadow-black bg-white rounded-xl p-12 prose lg:prose-lg mx-auto max-w-none"
+          className="border-black border-4 shadow-xl shadow-black bg-white rounded-xl p-6 lg:p-12 prose lg:prose-lg mx-auto max-w-none"
           dangerouslySetInnerHTML={{ __html: content }}
         ></MotionDiv>
       </article>

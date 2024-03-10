@@ -28,7 +28,7 @@ export const RepositoriesSection = async () => {
   return (
     <section className="container">
       <MotionH2 variants={titleAnimation} className="text-4xl font-wide mb-4">
-        My latest repositories
+        Latest repositories
       </MotionH2>
       <MotionDiv
         variants={animations}

@@ -44,7 +44,7 @@ export const Navbar = () => {
   const pathname = usePathname();
   return (
     <div className="container py-6">
-      <nav className="bg-white rounded-xl text-orange-foreground shadow-black shadow-2xl border-black border-4 p-4 flex flex-col lg:flex-row items-center justify-between space-y-4">
+      <nav className="bg-white rounded-xl text-orange-foreground shadow-black shadow-2xl border-black border-4 p-4 flex flex-col lg:flex-row items-center justify-between gap-y-4">
         <div className="flex gap-4 pl-2 flex-wrap justify-center">
           {items.map((item) => (
             <Link

@@ -38,10 +38,10 @@ export const HeroSection = () => {
       >
         <div className="flex">
           <div className="flex-1 flex flex-col justify-end items-start">
-            <h2 className="font-bold text-5xl mb-8">
+            <div className="font-bold text-5xl mb-8">
               <MotionDiv variants={textAnimation}>Hi! 👋</MotionDiv>
               <MotionDiv variants={textAnimation}>
-                I&apos;m <span className="text-white">Martin Paucot</span>,
+                I&apos;m <h1 className="text-white inline">Martin Paucot</h1>,
               </MotionDiv>
               <MotionDiv variants={textAnimation}>
                 a tech expert passionate by
@@ -49,7 +49,7 @@ export const HeroSection = () => {
               <MotionDiv variants={textAnimation}>
                 everything I don&apos;t know yet
               </MotionDiv>
-            </h2>
+            </div>
             <MotionLink
               variants={textAnimation}
               href="/blog"

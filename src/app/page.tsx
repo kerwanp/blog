@@ -13,6 +13,12 @@ const animation: Variants = {
   },
 };
 
+export const metadata = {
+  title: "Martin Paucot",
+  description:
+    "I'm a tech expert passionate by everything I don't know yet and this is my Blog!",
+};
+
 export default async function Home() {
   return (
     <MotionMain variants={animation} initial="hidden" animate="visible">

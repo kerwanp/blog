@@ -17,7 +17,8 @@ const animation: Variants = {
 export const RepositoryCard = ({ repository }: { repository: Repository }) => {
   return (
     <MotionLink
-      href={repository.url}
+      href={repository.html_url}
+      target="_blank"
       variants={animation}
       className="border-black border-4 shadow-black shadow-xl rounded-xl bg-white p-4 flex flex-col hover:shadow-lg transition-shadow active:hover:shadow-none"
     >

@@ -1,4 +1,4 @@
-import { fetchPost } from "@/libs/devto/fetch";
+import { fetchPost, fetchPosts } from "@/libs/devto/fetch";
 import { renderMarkdown } from "@/libs/markdown";
 import "highlight.js/styles/tokyo-night-dark.min.css";
 import Image from "next/image";
@@ -8,6 +8,46 @@ type PageProps = {
     slug: string;
   };
 };
+
+export async function generateStaticParams() {
+  const posts = await fetchPosts();
+  return posts.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const { title, description, social_image, slug } = await fetchPost(
+    params.slug,
+  );
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      url: `https://martin-paucot.fr/blog/${slug}`,
+      type: "article",
+      description,
+      images: social_image
+        ? [
+            {
+              url: social_image,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: "@PaucotMartin",
+      images: social_image ? [social_image] : [],
+    },
+  };
+}
 
 export default async function Page({ params: { slug } }: PageProps) {
   const post = await fetchPost(slug);

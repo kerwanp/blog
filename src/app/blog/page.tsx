@@ -12,6 +12,12 @@ const animation: Variants = {
   },
 };
 
+export const metadata = {
+  title: "Blog | Martin Paucot",
+  description:
+    "I write articles about nothing and everything. But mostly about software engineering.",
+};
+
 export default async function Page() {
   const posts = await fetchPosts();
   return (

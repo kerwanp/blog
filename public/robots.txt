@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.martin-paucot.fr
+
+# Sitemaps
+Sitemap: https://www.martin-paucot.fr/sitemap.xml

@@ -19,6 +19,7 @@ const mono = Fragment_Mono({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://www.martin-paucot.fr"),
   title: {
     template: process.env.APP_TITLE_TEMPLATE ?? "",
     default: process.env.APP_TITLE ?? "",

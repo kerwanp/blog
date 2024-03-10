@@ -41,13 +41,13 @@ export const HeroSection = () => {
             <h2 className="font-bold text-5xl mb-8">
               <MotionDiv variants={textAnimation}>Hi! 👋</MotionDiv>
               <MotionDiv variants={textAnimation}>
-                I'm <span className="text-white">Martin Paucot</span>,
+                I&apos;m <span className="text-white">Martin Paucot</span>,
               </MotionDiv>
               <MotionDiv variants={textAnimation}>
                 a tech expert passionate by
               </MotionDiv>
               <MotionDiv variants={textAnimation}>
-                everything I don't know yet
+                everything I don&apos;t know yet
               </MotionDiv>
             </h2>
             <MotionLink

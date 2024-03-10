@@ -9,7 +9,7 @@ type PageProps = {
   };
 };
 
-export default async function ({ params: { slug } }: PageProps) {
+export default async function Page({ params: { slug } }: PageProps) {
   const post = await fetchPost(slug);
   const content = await renderMarkdown(post.body_markdown);
   return (

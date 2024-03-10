@@ -12,7 +12,7 @@ const animation: Variants = {
   },
 };
 
-export default async function () {
+export default async function Page() {
   const posts = await fetchPosts();
   return (
     <main>

@@ -1,5 +1,7 @@
 import { fetchPost, fetchPosts } from "@/libs/devto/fetch";
 import { renderMarkdown } from "@/libs/markdown";
+import { MotionDiv, MotionMain } from "@/libs/motion";
+import { Variants } from "framer-motion";
 import "highlight.js/styles/tokyo-night-dark.min.css";
 import Image from "next/image";
 
@@ -49,35 +51,66 @@ export async function generateMetadata({
   };
 }
 
+const containerAnimation: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemAnimation: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+};
+
 export default async function Page({ params: { slug } }: PageProps) {
   const post = await fetchPost(slug);
   const content = await renderMarkdown(post.body_markdown);
   return (
-    <main>
+    <MotionMain
+      initial="hidden"
+      animate="visible"
+      variants={containerAnimation}
+    >
       <section className="container">
         <div className="flex flex-col items-center">
           {post.cover_image && (
-            <div className="border-2 border-black rounded-lg overflow-hidden mb-12">
+            <MotionDiv
+              variants={itemAnimation}
+              className="border-2 border-black rounded-lg overflow-hidden mb-12"
+            >
               <Image
                 src={post.cover_image}
                 alt={post.title}
                 width={1000}
                 height={420}
               />
-            </div>
+            </MotionDiv>
           )}
 
-          <div className="border-black border-2 shadow-black shadow-xl rounded-full p-4 px-24 bg-red mb-6">
+          <MotionDiv
+            variants={itemAnimation}
+            className="border-black border-2 shadow-black shadow-xl rounded-full p-4 px-24 bg-red mb-6"
+          >
             <h1 className="font-bold text-2xl">{post.title}</h1>
-          </div>
+          </MotionDiv>
         </div>
       </section>
       <article className="container">
-        <div
-          className="border-black border-4 shadow-xl shadow-black bg-white rounded-xl p-4 px-12 prose lg:prose-lg mx-auto max-w-none"
+        <MotionDiv
+          variants={itemAnimation}
+          className="border-black border-4 shadow-xl shadow-black bg-white rounded-xl p-12 prose lg:prose-lg mx-auto max-w-none"
           dangerouslySetInnerHTML={{ __html: content }}
-        ></div>
+        ></MotionDiv>
       </article>
-    </main>
+    </MotionMain>
   );
 }

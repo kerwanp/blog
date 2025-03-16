@@ -1,0 +1,236 @@
+---
+title: How to do stunning 3D with pure HTML/CSS
+---
+
+HTML and CSS may be the bedrock of 2D web design, but hidden within their virtual toolbox are the secrets to creating breathtaking 3D perspectives. Imagine crafting interactive interfaces that transcend flatland into a world where the X, Y, and Z axes dance together. In this blog post, we'll unveil the magic of HTML and CSS's 3D capabilities, guiding you through the essential properties and techniques to create stunning 3D visuals.
+
+**Like this one!**
+
+---
+
+## Introduction
+
+### Harnessing Perspective in HTML
+
+Although HTML and CSS are primarily designed for constructing 2D layouts, there are still 3 axes (X, Y & Z) enabling the creation of perspective through specific CSS properties.
+
+#### The `perspective` property
+
+The [perspective](https://developer.mozilla.org/en-US/docs/Web/CSS/perspective) property alters the user's perspective by adjusting the position of the [vanishing Point](https://en.wikipedia.org/wiki/Vanishing_point) along the Z-axis.
+
+For example, with the following code, utilizing the following code snippet will establish a distance of 800px between the user and the plane (Z-axis).
+
+```css
+.perspective {
+  position: relative;
+  perspective: 800px;
+}
+```
+
+```html
+<div class="perspective"></div>
+```
+
+#### The `perspective-origin` property
+
+The [perspective-origin](https://developer.mozilla.org/fr/docs/Web/CSS/perspective-origin) property determines the user's position along the X and Y axes.
+
+To view an object from above, you can employ the following code:
+
+```css
+.perspective {
+  position: relative;
+  perspective: 800px;
+  perspective-origin: 50% -200px;
+}
+```
+
+> In this example, we are centered on the X-axis (50%) and positioned -200px on the Y-axis.
+
+---
+
+Now that you have grasped the essentials of 3D in HTML and CSS, let's embark on creating our own 3D cube!
+
+### 1. Building the Foundation
+
+For our HTML structure, we will construct a perspective plane and add a div element for each face of our cube.
+
+```html
+<div class="perspective">
+  <div class="box">
+    <div class="face top"></div>
+    <div class="face bottom"></div>
+    <div class="face back"></div>
+    <div class="face front"></div>
+    <div class="face left"></div>
+    <div class="face right"></div>
+  </div>
+</div>
+```
+
+Now, let's imbue our perspective plane with a specific perspective. In our case, we desire an overhead view of our cube.
+
+```css
+.perspective {
+  perspective: 800px;
+  perspective-origin: 50% -200px;
+}
+```
+
+Then, we'll assign dimensions to our box and apply styling to our individual faces. To keep the 3D rendering within the perspective plane in our div, we incorporate `transform-style: preserve-3d`.
+
+```css
+.box {
+  width: var(--size);
+  aspect-ratio: 1;
+
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.face {
+  position: absolute;
+  width: var(--size);
+  aspect-ratio: 1;
+
+  background-color: hsl(39, 100%, 66%);
+
+  transform-style: preserve-3d;
+}
+```
+
+At this point, you should see all the faces superimposed at the same location, forming a square.
+
+![Picture of the result](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/59qkukrwk1yar0wjzjxj.png)
+
+### 2. Creating the Pattern
+
+Now, let's fabricate the 2D pattern of our cube, which we will then fold like a piece of paper. Additionally, we will incorporate a rotation animation for a better 3D visualization.
+
+> Creating a pattern simplifies the process of rotating and positioning elements accurately, preventing confusion with inverted faces.
+
+```css
+.box {
+  animation: rotate 4s linear infinite;
+}
+
+.face.front {
+}
+
+.face.bottom {
+  top: 100%;
+}
+
+.face.top {
+  bottom: 100%;
+}
+
+.face.back {
+  bottom: 200%;
+}
+
+.face.right {
+  left: 100%;
+}
+
+.face.left {
+  right: 100%;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+```
+
+Now, you should see a cross-shaped configuration:
+
+### 3. Folding the Faces to Craft the Cube
+
+Our next step involves folding the faces to create the cube effect. This entails utilizing `rotateX()`, `rotateY()` and specifying the vertex from which the folding originates via `transform-origin`.
+
+For the **back face** we need to adjust the `transform-origin` both the Y and Z axes since it is located two faces away from the front face.
+
+```css
+.face.front {
+}
+
+.face.bottom {
+  top: 100%;
+  transform-origin: top;
+  transform: rotateX(-90deg);
+}
+
+.face.top {
+  bottom: 100%;
+  transform-origin: bottom;
+  transform: rotateX(90deg);
+}
+
+.face.back {
+  bottom: 200%;
+  transform-origin: center 150px -50px;
+  transform: rotateX(180deg);
+}
+
+.face.right {
+  left: 100%;
+  transform-origin: left;
+  transform: rotateY(90deg);
+}
+
+.face.left {
+  right: 100%;
+  transform-origin: right;
+  transform: rotateY(-90deg);
+}
+```
+
+### 4. Applying Shading to the Faces
+
+To achieve a convincing 3D effect, we need to introduce shading to the faces. Although CSS lacks native lighting, we can create the illusion of depth by varying the lightness of colors.
+
+We'll utilize the `lightness` property of `hsl()` to produce distinct shades for each face.
+
+```css
+.face {
+  background-color: hsl(39, 100%, var(--lightness));
+}
+
+.face.front {
+  --lightness: 66%;
+}
+
+.face.bottom {
+  --lightness: 74%;
+}
+
+.face.top {
+  --lightness: 74%;
+}
+
+.face.back {
+  --lightness: 78%;
+}
+
+.face.right {
+  --lightness: 70%;
+}
+
+.face.left {
+  --lightness: 70%;
+}
+```
+
+Now, you should behold a splendid 3D cube, crafted solely with HTML and CSS!
+
+---
+
+I hope this tutorial has ignited your imagination for creating captivating 3D animations with pure HTML and CSS.
+
+Feel free to share your creations in the comments section!
+And for more content like this, be sure to follow me [@PaucotMartin](https://twitter.com/PaucotMartin) on X (formerly Twitter).

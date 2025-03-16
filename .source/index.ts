@@ -1,0 +1,13 @@
+// @ts-nocheck -- skip type checking
+import * as caseStudies_doc_3 from "../content/case-studies/showroom-lacoste.mdx?collection=caseStudies&hash=f55ac96525f8d32c41b223038f416bf2"
+import * as caseStudies_doc_2 from "../content/case-studies/mentorshow.mdx?collection=caseStudies&hash=f55ac96525f8d32c41b223038f416bf2"
+import * as caseStudies_doc_1 from "../content/case-studies/kanji-migration.mdx?collection=caseStudies&hash=f55ac96525f8d32c41b223038f416bf2"
+import * as caseStudies_doc_0 from "../content/case-studies/franprix-show.mdx?collection=caseStudies&hash=f55ac96525f8d32c41b223038f416bf2"
+import * as blog_doc_3 from "../content/blog/stunning-3d-pure-css.mdx?collection=blog&hash=f55ac96525f8d32c41b223038f416bf2"
+import * as blog_doc_2 from "../content/blog/stop-nesting-your-code.mdx?collection=blog&hash=f55ac96525f8d32c41b223038f416bf2"
+import * as blog_doc_1 from "../content/blog/nextjs-x-notion.mdx?collection=blog&hash=f55ac96525f8d32c41b223038f416bf2"
+import * as blog_doc_0 from "../content/blog/nextjs-x-devto.mdx?collection=blog&hash=f55ac96525f8d32c41b223038f416bf2"
+import { _runtime } from "fumadocs-mdx"
+import * as _source from "../source.config"
+export const blog = _runtime.doc<typeof _source.blog>([{ info: {"path":"nextjs-x-devto.mdx","absolutePath":"/Users/mpaucot/workspace/blog-v2/content/blog/nextjs-x-devto.mdx"}, data: blog_doc_0 }, { info: {"path":"nextjs-x-notion.mdx","absolutePath":"/Users/mpaucot/workspace/blog-v2/content/blog/nextjs-x-notion.mdx"}, data: blog_doc_1 }, { info: {"path":"stop-nesting-your-code.mdx","absolutePath":"/Users/mpaucot/workspace/blog-v2/content/blog/stop-nesting-your-code.mdx"}, data: blog_doc_2 }, { info: {"path":"stunning-3d-pure-css.mdx","absolutePath":"/Users/mpaucot/workspace/blog-v2/content/blog/stunning-3d-pure-css.mdx"}, data: blog_doc_3 }]);
+export const caseStudies = _runtime.doc<typeof _source.caseStudies>([{ info: {"path":"franprix-show.mdx","absolutePath":"/Users/mpaucot/workspace/blog-v2/content/case-studies/franprix-show.mdx"}, data: caseStudies_doc_0 }, { info: {"path":"kanji-migration.mdx","absolutePath":"/Users/mpaucot/workspace/blog-v2/content/case-studies/kanji-migration.mdx"}, data: caseStudies_doc_1 }, { info: {"path":"mentorshow.mdx","absolutePath":"/Users/mpaucot/workspace/blog-v2/content/case-studies/mentorshow.mdx"}, data: caseStudies_doc_2 }, { info: {"path":"showroom-lacoste.mdx","absolutePath":"/Users/mpaucot/workspace/blog-v2/content/case-studies/showroom-lacoste.mdx"}, data: caseStudies_doc_3 }]);

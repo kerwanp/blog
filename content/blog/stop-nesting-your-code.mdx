@@ -1,0 +1,140 @@
+---
+title: Stop Nesting Your Code
+date: 2024-09-11
+---
+
+I am what we call a **Never Nester** and in this Post I will show you why and how to become one of us.
+
+## What is Nesting?
+
+When using conditions, for-loops or while-loops we add one layer of indentation of the wrapped code. Some languages requires it and some no. But at the end it is **essential** for readability.
+
+In the following code that I purposely made unappealing for this Post, we can see that we have up to three layers:
+
+- The condition matching the email
+- The condition checking for an existing user
+- The try catch for the creation of our user
+
+```typescript
+async function registerUser(email: string, plainPassword: string) {
+  if (email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+    let user = await findUserByEmail(email);
+    if (!user) {
+      const rounds = process.env.BCRYPT_ROUNDS;
+      if (rounds) {
+        try {
+          const password = await bcrypt.hash(plainPassword, 10);
+          user = await createUser(email, password);
+          return user;
+        } catch (e) {
+          throw new Error("Error while creating user");
+        }
+      } else {
+        throw new Error("Environment variable BCRYPT_ROUNDS not found");
+      }
+    } else {
+      throw new Error("User already exists");
+    }
+  } else {
+    throw new Error("Not a valid email");
+  }
+}
+```
+
+## The problem of Nesting
+
+**The more layers you have, the harder it is to read.**
+
+When reading nested code we have to keep in mind in what context we are, in what conditions or loop we are.
+
+And when using `if {} else {}` we have to go back and forth to understand what happens if the condition does not match while keeping the context when reading.
+
+## How to Denest
+
+### Invert your code
+
+We usually write our code the way we think it:
+
+- "I want to be sure that my email is exact"
+- "I want to be sure that I do not have a user with the same email"
+
+But with this process we handle the negative case at the end of our code in the `else`. Instead we should imagine our code this way:
+
+- "I do not want a user with a wrong email"
+- "I do not want to have a user with the same email"
+
+The goal of this process is to `return` or `throw` as early as possible:
+
+```typescript
+async function registerUser(email: string, plainPassword: string) {
+  if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+    throw new Error("Not a valid email");
+  }
+
+  let user = await findUserByEmail(email);
+  if (user) {
+    throw new Error("User already exists");
+  }
+
+  const rounds = process.env.BCRYPT_ROUNDS;
+  if (!rounds) {
+    throw new Error("Environment variable BCRYPT_ROUNDS not found");
+  }
+
+  try {
+    const password = await bcrypt.hash(plainPassword, 10);
+    user = await createUser(email, password);
+    return user;
+  } catch (e) {
+    throw new Error("Error while creating user");
+  }
+}
+```
+
+We now have only one layer by simply inverting our conditions.
+
+### Extract your code
+
+By extracting we do not only improve the readability of our code, but also its reusability and abstraction.
+
+To find what we should extract we have to ask ourself what are the minimum dependencies required by the code I'm writing.
+
+The method is to replace most of `the` by `a` and removing most of the subjects we can.
+
+For example:
+
+- "I want to hash the password of the user that I am registering using the environment variable `BCRYPT_ROUNDS` that can be undefined"
+
+Become:
+
+- "I want to hash a password using the environment variable `BCRYPT_ROUNDS` that can be undefined"
+
+> We know for sure that we will always hash the password everytime a user is created, we can also move this part in the `createUser` function to avoid future duplicated code.
+
+```typescript
+async function createUser(email, password): Promise<User> {
+  return db.users.insert({
+    email,
+    password: hashPassword(password),
+  });
+}
+
+async function hashPassword(password: string) {
+  const rounds = process.env.BCRYPT_ROUNDS;
+  if (!rounds) throw new Error("Environment variable BCRYPT_ROUNDS not found");
+  return bcrypt.hash(password, 10);
+}
+
+async function registerUser(email: string, plainPassword: string) {
+  if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+    throw new Error("Not a valid email");
+  }
+
+  let user = await findUserByEmail(email);
+  if (user) {
+    throw new Error("User already exists");
+  }
+
+  return createUser(email, plainPassword);
+}
+```

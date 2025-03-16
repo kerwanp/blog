@@ -1,0 +1,279 @@
+---
+title: Build a Blog using Next.JS and DEV.to
+---
+
+In this article you will learn how to build a Next.JS blog by fetching your Posts directly from DEV.to.
+
+---
+
+I received an incredible feedback from my Post [Use Notion as a database for your Next.JS Blog](https://dev.to/martinp/use-notion-as-a-database-for-your-nextjs-blog-195p) thanks from all of you 🙌
+
+_I even saw the Post on the front page of daily.dev 😶_
+
+Today I wanted to share with you how I built my [Personal Blog](https://martin-paucot.fr) under an hour by using the [DEV.to](https://dev.to/) API.
+
+**Let's get started 🔥**
+
+---
+
+## 1. Create a new Next.JS App
+
+Start by using the [create-next-app](https://nextjs.org/docs/pages/api-reference/create-next-app) utility using your favorite package manager.
+
+```
+npx create-next-app@latest
+yarn create next-app
+pnpm create next-app
+```
+
+> Check ✅ for everything! We want linting, typings and obviously the App Router! I also highly recommend to use the `src` folder.
+
+## 2. Install dependencies
+
+You will need 9 dependencies:
+
+- **[remark](https://github.com/remarkjs/remark):** We will use it to parse our Posts Markdown
+- **[remark-html](https://github.com/remarkjs/remark-html):** A Remark plugin to transform our Markdown into HTML
+- **[rehype](https://github.com/rehypejs/rehype):** A library to process and extend HTML
+- **[rehype-highlight](https://github.com/rehypejs/rehype-highlight):** A Rehype plugin to plug [highlight.js](https://highlightjs.org/) to highlight our code
+- **[rehype-slug](https://github.com/rehypejs/rehype-slug):** A Rehype plugin that adds ids to our Post titles (anchors)
+- **[@jsdevtools/rehype-toc](https://github.com/JS-DevTools/rehype-toc):** A Rehype plugin that generates a table of content based on our Post titles
+- **[rehype-stringify](https://github.com/rehypejs/rehype):** A Rehype plugin that transform our Rehype output into a String
+- **[remark-rehype](https://github.com/remarkjs/remark-rehype):** A Remark plugin to use Remark and Rehype in symbiose
+- **[unified](https://unifiedjs.com/):** The library to make easy to use all thoses plugins together
+
+```
+npm install remark remark-html rehype rehype-highlight rehype-slug @jsdevtools/rehype-toc rehype-stringify remark-rehype unified
+
+yarn add remark remark-html rehype rehype-highlight rehype-slug @jsdevtools/rehype-toc rehype-stringify remark-rehype unified
+```
+
+## 3. Fetch from DEV.to
+
+[DEV.to](https://dev.to/) provide a wonderful Public API that does not require any authentication you can find the official documentation [here](https://developers.forem.com/api/v1).
+
+In our case we will need two things:
+
+- Fetching our Posts `/api/articles?username=<username>`
+- Fetching a specific Post `/api/articles/<username>/<post-slug>`
+
+### Add environment variables
+
+It is a good practice to avoid hardcoding values, in case you want to change your username or open-source your blog.
+
+Add your DEV.to username in `.env.local` to avoid hardcoding it:
+
+```env
+DEVTO_USERNAME="martinp"
+```
+
+### Add typings
+
+Let's add some typings to type the response of the DEV.to API in `src/lib/devto/types.ts`:
+
+```ts
+// src/lib/devto/types.ts
+
+export type User = {
+  user_id: number;
+  name: string;
+  username: string;
+  twitter_username: string | null;
+  github_username: string | null;
+  website_url: string | null;
+  profile_image: string;
+  profile_image_90: string;
+};
+
+export type Post = {
+  type_of: string;
+  id: number;
+  title: string;
+  description: string;
+  readable_publish_date: string;
+  slug: string;
+  path: string;
+  url: string;
+  comments_count: number;
+  collection_id: number | null;
+  published_timestamp: string;
+  positive_reactions_count: number;
+  cover_image: string | null;
+  social_image: string;
+  canonical_url: string;
+  created_at: string;
+  edited_at: string;
+  crossposted_at: string | null;
+  published_at: string;
+  last_comment_at: string;
+  reading_time_minutes: number;
+  tag_list: string[];
+  tags: string;
+  user: User;
+};
+
+export type PostDetails = Post & {
+  body_html: string;
+  body_markdown: string;
+  tags: string[];
+};
+```
+
+> I manually made thoses types and they maybe does not exactly match the actual API, feel free to update them.
+
+### Create the fetching functions
+
+Next create a new file `src/lib/devto/fetch.ts`, it will contains the functions that will fetch the API. It is a good practice to separate them from your App to make them easily reusable.
+
+```ts title="src/lib/devto/fetch.ts"
+import { notFound } from "next/navigation";
+import { Post, PostDetails } from "./types";
+
+export async function fetchPosts(): Promise<Post[]> {
+  const res = await fetch(
+    `https://dev.to/api/articles?username=${process.env.DEVTO_USERNAME}`,
+    {
+      next: { revalidate: 3 * 60 * 60 },
+    },
+  );
+
+  if (!res.ok) notFound();
+  return res.json();
+}
+
+export async function fetchPost(slug: string): Promise<PostDetails> {
+  const res = await fetch(
+    `https://dev.to/api/articles/${process.env.DEVTO_USERNAME}/${slug}`,
+    {
+      next: { revalidate: 3 * 60 * 60 },
+    },
+  );
+
+  if (!res.ok) notFound();
+  return res.json();
+}
+```
+
+Notice that we add the parameter `revalidate: 3 * 60 * 60`. By default the `fetch` function extended by Next.JS will cache everything. It will make your Blog blazingly fast but we also want to keep our Blog up to date. With this parameter we tell Next.JS to revalidate the cache every 3 hours.
+
+> `notFound()` acts like a return and will show the `not-found.tsx` page. [More information here](https://nextjs.org/docs/app/api-reference/functions/not-found).
+
+## 4. Create the render function
+
+Now let's create a function to render the content of your Posts by using Remark, Rehype and all the plugins:
+
+```ts
+// src/lib/markdown.ts
+
+import toc from "@jsdevtools/rehype-toc";
+import rehypeHighlight from "rehype-highlight";
+import rehypeSlug from "rehype-slug";
+import rehypeStringify from "rehype-stringify";
+import remarkRehype from "remark-rehype";
+import remarkParse from "remark-parse";
+import { unified } from "unified";
+
+export function renderMarkdown(markdown: string): Promise<string> {
+  return unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeHighlight, { ignoreMissing: true })
+    .use(rehypeSlug)
+    .use(rehypeStringify)
+    .use(toc, {
+      headings: ["h1", "h2", "h3"],
+    })
+    .process(markdown)
+    .then((res) => res.toString());
+}
+```
+
+## 5. Create the pages
+
+Now that you have everything in place to fetch your posts, it is time to create the pages!
+
+### The Posts page
+
+It can't be simpler, simply use your `fetchPosts` function and show them:
+
+```tsx
+// src/app/blog/page.tsx
+
+import { fetchPosts } from "@/lib/devto/fetch";
+
+export default async function Page() {
+  const posts = await fetchPosts();
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-8">
+      {posts.map((post) => (
+        <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+      ))}
+    </div>
+  );
+}
+```
+
+### The Post page
+
+Create a new page with a dynamic segment for our slug `src/app/blog/[slug]/page.tsx`.
+
+Use the parameters to fetch the post and use the `renderMarkdown` function to transform your Markdown into HTML.
+
+You can also add `generateMetadata` to set the title and the description using the data of your Post.
+
+```tsx
+// src/app/blog/[slug]/page.tsx
+
+import "highlight.js/styles/github-dark.css"; // Import your favorite highlight.js theme
+
+import { fetchPost, fetchPosts } from "@/lib/devto/fetch";
+import { renderMarkdown } from "@/lib/markdown";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const { title, description } = await fetchPost(params.slug);
+
+  return {
+    title,
+    description,
+  };
+}
+
+export default async function Page({ params }: { params: { slug: string } }) {
+  const { body_markdown } = await fetchPost(params.slug);
+
+  const content = await renderMarkdown(body_markdown);
+
+  return (
+    <>
+      <article>
+        <div dangerouslySetInnerHTML={{ __html: content }} />
+      </article>
+    </>
+  );
+}
+```
+
+Notice that you are calling twice the `fetchPost` method, so are you fetching twice? No! It uses the cache, you can verify it when running the `dev` server, you should see `cache: HIT`.
+
+**And you know what is reaaaally cool?**
+Navigate to the list of your posts and hover the links, you should see in your console your `/blog/[slug]` pages pre-rendering to predict the user navigation 🔥
+
+## 6. Going further
+
+- Use [next-sitemap](https://www.npmjs.com/package/next-sitemap) to generate your Sitemap
+- Add [@vercel/analytics](https://vercel.com/docs/concepts/analytics/quickstart) to gather analytics from your blog
+- Use [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin) to easily style the content of your posts
+
+---
+
+I hope that this post motivated you to build an incredible blog! Share your work in the comment section! 💬
+
+Oh and if you want more content like this, follow me:
+
+- [DEV.to](https://dev.to/martinp)
+- [Twitter](https://twitter.com/PaucotMartin)

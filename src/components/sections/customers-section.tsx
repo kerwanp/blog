@@ -36,12 +36,12 @@ const customers = [
 
 export default function CustomersSection() {
   return (
-    <section className="mt-24">
-      <div className="container mx-auto flex flex-col items-center">
+    <section className="mt-24 container mx-auto">
+      <div className="flex flex-col items-center">
         <h2 className="uppercase text-muted-foreground font-bold text-center">
           Trusted by
         </h2>
-        <div className="flex gap-12 justify-center items-center mt-4 mb-8">
+        <div className="flex flex-wrap gap-12 justify-center items-center mt-4 mb-8">
           {customers.map((customer) => (
             <div key={customer.name}>
               <Tooltip delayDuration={50}>
@@ -52,7 +52,7 @@ export default function CustomersSection() {
                       height={64}
                       width={128}
                       alt={customer.name}
-                      className="grayscale brightness-100"
+                      className="grayscale dark:invert brightness-100 dark:brightness-0 dark:opacity-80"
                     />
                   </a>
                 </TooltipTrigger>

@@ -13,11 +13,11 @@ export default async function OSSSection() {
   ]);
 
   return (
-    <section className="mb-16">
-      <div className="container mx-auto relative border border-primary rounded-lg p-12">
-        <div className="grid grid-cols-2 gap-12">
+    <section className="mb-16 container mx-auto">
+      <div className="relative border border-primary rounded-lg p-6 md:p-12">
+        <div className="grid md:grid-cols-2 gap-12">
           <div>
-            <h2 className="text-6xl font-semibold mb-8">
+            <h2 className="text-4xl xl:text-6xl font-semibold mb-8">
               Shaping the technologies of tomorrow
             </h2>
             <p className="text-lg mb-8">
@@ -34,7 +34,7 @@ export default async function OSSSection() {
               </a>
             </Button>
           </div>
-          <div className="grid grid-cols-2 self-start gap-3">
+          <div className="grid xl:grid-cols-2 self-start gap-3">
             {repositories.map((repository) => (
               <RepositoryCard key={repository.id} repository={repository} />
             ))}
@@ -57,7 +57,13 @@ const RepositoryCard = ({ repository }: { repository: Repository }) => {
     >
       <ExternalLink className="absolute top-4 right-4" size={16} />
       <div className="flex-1 mb-3">
-        <img className="rounded-md mb-2" src={image} width={32} height={32} />
+        <img
+          className="rounded-md mb-2"
+          src={image}
+          width={32}
+          height={32}
+          alt={repository.full_name}
+        />
         <h3 className="font-bold mb-1 overflow-hidden whitespace-nowrap text-ellipsis">
           {repository.full_name}
         </h3>

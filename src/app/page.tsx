@@ -11,10 +11,10 @@ export default function Page() {
   return (
     <>
       <div className="min-h-[calc(100vh-120px)]">
-        <section className="pt-[200px] mb-8">
+        <section className="pt-[100px] mb-8">
           <div className="container mx-auto flex flex-col justify-center items-center">
             <div className="max-w-[600px] text-center">
-              <h1 className="text-6xl font-semibold text-center mb-5">
+              <h1 className="text-4xl md:text-6xl font-semibold text-center mb-5">
                 Breaking Down Complexity into Elegant Solutions.
               </h1>
               <div className="text-muted-foreground mb-8 text-center">

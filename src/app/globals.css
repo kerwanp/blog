@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@import "fumadocs-twoslash/twoslash.css";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
 
 @plugin "tailwindcss-animate";
 @plugin "@tailwindcss/typography";
@@ -145,67 +148,6 @@
     @apply bg-background text-foreground;
   }
 }
-code {
-  font-family: var(--font-mono);
-}
-
-.shiki code span {
-  color: var(--shiki-light);
-}
-
-.dark .shiki code span {
-  color: var(--shiki-dark);
-}
-
-.fd-codeblock code {
-  display: grid;
-  font-size: 13px;
-}
-
-.shiki code .diff.remove {
-  background-color: var(--fd-diff-remove-color);
-  opacity: 0.7;
-}
-
-.shiki code .diff:before {
-  position: absolute;
-  left: 6px;
-}
-
-.shiki code .diff.remove:before {
-  content: "-";
-  color: var(--fd-diff-remove-symbol-color);
-}
-
-.shiki code .diff.add {
-  background-color: var(--fd-diff-add-color);
-}
-
-.shiki code .diff.add:before {
-  content: "+";
-  color: var(--fd-diff-add-symbol-color);
-}
-
-.shiki code .diff {
-  margin: 0 -16px;
-  padding: 0 16px;
-  position: relative;
-}
-
-.shiki .highlighted {
-  margin: 0 -16px;
-  padding: 0 16px;
-  background-color: hsl(var(--primary) / 10%);
-}
-
-.shiki .highlighted-word {
-  padding: 1px 2px;
-  margin: -1px -3px;
-  border: 1px solid;
-  border-color: hsl(var(--primary) / 50%);
-  background-color: hsl(var(--primary) / 10%);
-  border-radius: 2px;
-}
 
 nav .corner {
   width: 52px;
@@ -224,12 +166,12 @@ nav .corner {
 
 nav .corner-left {
   left: 0;
-  border-top-left-radius: 26;
+  border-top-left-radius: 26px;
 }
 
 nav .corner-right {
   right: 0;
-  border-top-right-radius: 26;
+  border-top-right-radius: 26px;
 }
 
 nav[data-sticky="true"] .corner {

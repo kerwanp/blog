@@ -1,5 +1,10 @@
-import PostCard from "@/components/post-card";
+import CaseStudyCard from "@/components/case-study-card";
+import { createMetadata } from "@/lib/metadata";
 import { caseStudies } from "@/lib/source";
+
+export const metadata = createMetadata({
+  title: "Case Studies | Martin Paucot",
+});
 
 export default function Page() {
   const pages = caseStudies.getPages();
@@ -10,9 +15,9 @@ export default function Page() {
         <h1 className="text-6xl font-semibold text-center mb-16">
           Case studies
         </h1>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {pages.map((post) => (
-            <PostCard key={post.url} post={post} />
+            <CaseStudyCard key={post.url} caseStudy={post} />
           ))}
         </div>
       </div>

@@ -1,12 +1,14 @@
 ---
 title: Use Notion as a database for your Next.JS Blog
+description: Learn how to build your personal blog by using Notion as your CMS.
+date: 2023-03-13
 ---
 
 Notion is an extremely powerful tool to manage your content by creating a database you can even add properties to pages: publication date, tags, etc.
 
 In this Post you will learn how to fetch pages from the Notion API and render their content to create a wonderful Next.JS Blog entirely managed with Notion.
 
-## 1. Create a Notion Database
+## Create a Notion Database
 
 A Notion Database is a list of pages with defined properties, it provides features to easily manage your content with different type of views (table, calendar, etc).
 
@@ -25,9 +27,9 @@ Do not forget to create your posts and write some content in them!
 
 ### Find the database ID
 
-Later in this guide you will need the ID of your database. You will find it in the URL: https://www.notion.so/myworkspace/<u>50b6156388e445eaaca3a3599d6f7ade</u>
+Later in this guide you will need the ID of your database.
 
-## 2. Get a Notion Token
+## Get a Notion Token
 
 ### Create an Integration
 
@@ -47,7 +49,7 @@ Click on the `•••` in the top right corner of your database, then on **Add
 
 > To avoid giving access to each of your databases, you can add the integration to a parent page.
 
-## 3. Setup the project
+## Setup the project
 
 Let's install the required dependencies. We are going to use four libraries:
 
@@ -56,20 +58,18 @@ Let's install the required dependencies. We are going to use four libraries:
 - [@notion-render/hljs-plugin](https://www.npmjs.com/package/@notion-render/hljs-plugin) A plugin to highlight your code blocks
 - [@notion-render/bookmark-plugin](https://www.npmjs.com/package/@notion-render/bookmark-plugin) A plugin to fetch website metadata to render bookmarks
 
-```bash
-$ yarn add @notionhq/client @notion-render/client @notion-render/hljs-plugin @notion-render/bookmark-plugin
-# Or
-$ npm install @notionhq/client @notion-render/client @notion-render/hljs-plugin @notion-render/bookmark-plugin
+```package-install
+yarn add @notionhq/client @notion-render/client @notion-render/hljs-plugin @notion-render/bookmark-plugin
 ```
 
 Then store your Internal Integration Token and the database Id into your `.env.local` file so you can access it later.
 
-```env
+```dotenv
 NOTION_TOKEN="secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 NOTION_DATABASE_ID="xxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
-## 4. Create the Post Page
+## Create the Post Page
 
 ### Create the Notion Client
 
@@ -124,11 +124,11 @@ export const fetchPageBlocks = React.cache((pageId: string) => {
 
 You can notice two things:
 
-#### - `import 'server-only';`
+- `import 'server-only';`
 
 This line make sure that the file never get imported by the client to avoid leaking your Notion Token.
 
-#### - `React.cache`
+- `React.cache`
 
 Next.JS provide an extremely good caching system with the `fetch()` function but we can not benefit from it as we are using the Notion JS SDK.
 
@@ -138,8 +138,7 @@ Instead we can use `React.cache`, a powerful method that will returns the same r
 
 Create a page with a dynamic segment `[slug]`. Inside we will fetch our pages so it must be a Server Component:
 
-```tsx
-// app/blog/[slug]/page.tsx
+```tsx [title="app/blog/[slug]/page.tsx"]
 import { fetchPageBlocks, fetchPageBySlug } from "@/lib/notion";
 import { notFound } from "next/navigation";
 

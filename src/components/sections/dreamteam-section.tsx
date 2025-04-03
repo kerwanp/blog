@@ -3,9 +3,9 @@ import { Globe } from "../globe";
 
 export const DreamteamSection = () => {
   return (
-    <section className="mb-12">
-      <div className="container mx-auto flex items-center h-[500px] gap-6 bg-primary text-primary-foreground rounded-lg justify-center">
-        <div className="w-[500px] aspect-square relative">
+    <section className="mb-12 container mx-auto">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-6 bg-primary text-primary-foreground rounded-lg justify-center p-6 md:p-8">
+        <div className="hidden md:block w-[30%] aspect-square relative">
           <Globe />
         </div>
         <div>

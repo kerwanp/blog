@@ -1,5 +1,7 @@
 ---
 title: Build a Blog using Next.JS and DEV.to
+description: Learn how to build your personal blog by using DEV.to as your CMS.
+date: 2023-03-17
 ---
 
 In this article you will learn how to build a Next.JS blog by fetching your Posts directly from DEV.to.
@@ -20,10 +22,10 @@ Today I wanted to share with you how I built my [Personal Blog](https://martin-p
 
 Start by using the [create-next-app](https://nextjs.org/docs/pages/api-reference/create-next-app) utility using your favorite package manager.
 
-```
+```package-install
 npx create-next-app@latest
-yarn create next-app
-pnpm create next-app
+yarn create next
+pnpm create next
 ```
 
 > Check ✅ for everything! We want linting, typings and obviously the App Router! I also highly recommend to use the `src` folder.
@@ -42,10 +44,8 @@ You will need 9 dependencies:
 - **[remark-rehype](https://github.com/remarkjs/remark-rehype):** A Remark plugin to use Remark and Rehype in symbiose
 - **[unified](https://unifiedjs.com/):** The library to make easy to use all thoses plugins together
 
-```
+```package-install
 npm install remark remark-html rehype rehype-highlight rehype-slug @jsdevtools/rehype-toc rehype-stringify remark-rehype unified
-
-yarn add remark remark-html rehype rehype-highlight rehype-slug @jsdevtools/rehype-toc rehype-stringify remark-rehype unified
 ```
 
 ## 3. Fetch from DEV.to
@@ -63,7 +63,7 @@ It is a good practice to avoid hardcoding values, in case you want to change you
 
 Add your DEV.to username in `.env.local` to avoid hardcoding it:
 
-```env
+```dotenv
 DEVTO_USERNAME="martinp"
 ```
 

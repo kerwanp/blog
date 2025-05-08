@@ -1,0 +1,48 @@
+---
+title: "Offline-First Infrastructure for Franprix Venue"
+type: case-study
+description: "Redefining event infrastructure with a high-availability, on-site platform powering hundreds of devices without relying on the internet"
+
+date: 2024-04-03
+---
+
+## Overview
+
+Franprix hosts an annual salon bringing together franchise store directors and major brand partners. During the event, hundreds of tablets are distributed to attendees, enabling them to place product orders directly with suppliers in real time.
+
+However, the venue’s unreliable internet connection posed a critical risk to the event’s success. Ensuring a flawless, always-on experience without relying on external connectivity became a central challenge.
+
+![/images/case-studies/franprix/salon.webp](/images/case-studies/franprix/salon.webp)
+
+## Goals & Challenges
+
+The main objective was to provide a seamless, high-availability ordering experience for all participants without depending on the public internet.
+
+- **High Availability:**  
+  Ensure that the ordering system remains operational during the entire event.
+
+- **Offline-First:**  
+  Build a system that can function without internet access, allowing users to place orders even in the event of connectivity issues.
+
+- **Monitoring and Support:**  
+  Implement a robust monitoring system to track the performance of the infrastructure and provide real-time support during the event.
+
+## Approach & Technologies
+
+- **High availability:**  
+  The on-premise infrastructure has been built on multiple servers managed in cluster using [Proxmox](https://www.proxmox.com/) to ensure high availability and redundancy even in the event of hardware failure.
+
+- **Private Network:**  
+  The services has been made accessible through a private network, ensuring that all devices can communicate with the ordering system without relying on public internet.
+
+- **Monitoring solution:**  
+  Monitoring dashboards has been provided to Franprix engineers to track the performance of the infrastructure and allowing them to deploy fixes in real time.
+
+- **On-site Support:**  
+  Providing on-site support during the event to ensure that any issues could be quickly identified and resolved.
+
+## Conclusion
+
+By designing and deploying a fully independent, bare-metal infrastructure, I empowered Franprix to deliver a seamless ordering experience at their annual salon — without a single point of failure.
+
+This project reflects the strength of tailored infrastructure solutions — engineered for resilience, delivered with precision.

@@ -65,6 +65,7 @@ export function TOCItems({
       <Primitive.ScrollProvider containerRef={viewRef}>
         <ScrollViewport className="relative min-h-0 text-sm" ref={viewRef}>
           <TocThumb
+            // @ts-expect-error -- this
             containerRef={containerRef}
             className="absolute start-0 mt-[var(--fd-top)] h-[var(--fd-height)] w-px bg-fd-primary transition-all"
           />

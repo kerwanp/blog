@@ -5,12 +5,10 @@ import localFont from "next/font/local";
 import { Comfortaa } from "next/font/google";
 import { Navbar } from "../components/navbar";
 import Footer from "../components/footer";
-import { CalProvider } from "../providers/cal.provider";
 import BookButton from "../components/book-button";
 import AnimatedGridPattern from "@/components/animated-grid-pattern";
-import { TooltipProvider } from "@/components/tooltip";
-import { ThemeProvider } from "@/providers/theme.provider";
 import { createMetadata } from "@/lib/metadata";
+import { Providers } from "./layout.client";
 
 const sans = Comfortaa({
   variable: "--font-sans",
@@ -34,29 +32,20 @@ export default function RootLayout({
       <body
         className={`relative min-h-screen bg-background font-sans ${sans.variable} ${mono.variable}`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TooltipProvider>
-            <CalProvider>
-              <Navbar />
-              <div className="h-screen w-full top-0 absolute overflow-hidden -z-10">
-                <AnimatedGridPattern
-                  numSquares={30}
-                  maxOpacity={0.5}
-                  duration={3}
-                  className="[mask-image:radial-gradient(1000px_500px_at_center,white,transparent)] inset-x-0 inset-y-[-30%]"
-                />
-              </div>
-              <main className="min-h-screen">{children}</main>
-              <Footer />
-              <BookButton />
-            </CalProvider>
-          </TooltipProvider>
-        </ThemeProvider>
+        <Providers>
+          <Navbar />
+          <div className="h-screen w-full top-0 absolute overflow-hidden -z-10">
+            <AnimatedGridPattern
+              numSquares={30}
+              maxOpacity={0.5}
+              duration={3}
+              className="[mask-image:radial-gradient(1000px_500px_at_center,white,transparent)] inset-x-0 inset-y-[-30%]"
+            />
+          </div>
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+          <BookButton />
+        </Providers>
       </body>
     </html>
   );

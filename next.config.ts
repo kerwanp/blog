@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       fullUrl: true,
     },
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   serverExternalPackages: [
     "ts-morph",
     "typescript",

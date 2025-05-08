@@ -7,7 +7,11 @@ export const metadata = createMetadata({
 });
 
 export default function Page() {
-  const pages = caseStudies.getPages();
+  const pages = [...caseStudies.getPages()].sort(
+    (a, b) =>
+      new Date(b.data.date ?? b.file.name).getTime() -
+      new Date(a.data.date ?? a.file.name).getTime(),
+  );
 
   return (
     <section className="my-16">

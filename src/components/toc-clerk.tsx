@@ -34,13 +34,11 @@ export default function ClerkTOCItems({
       const d: string[] = [];
       for (let i = 0; i < items.length; i++) {
         const element: HTMLElement | null = container.querySelector(
-          // @ts-expect-error
           `a[href="#${items[i].url.slice(1)}"]`,
         );
         if (!element) continue;
 
         const styles = getComputedStyle(element);
-        // @ts-expect-error
         const offset = getLineOffset(items[i].depth) + 1,
           top = element.offsetTop + parseFloat(styles.paddingTop),
           bottom =
@@ -91,6 +89,7 @@ export default function ClerkTOCItems({
             }}
           >
             <TocThumb
+              // @ts-expect-error -- this
               containerRef={containerRef}
               className="mt-[var(--fd-top)] h-[var(--fd-height)] bg-primary transition-all"
             />

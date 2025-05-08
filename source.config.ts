@@ -30,6 +30,7 @@ export const caseStudies = defineCollections({
     date: z.string().date().or(z.date()).optional(),
     type: z.enum(["case-study", "article"]).default("case-study"),
     description: z.string().optional(),
+    logo: z.string().optional(),
   }),
 });
 

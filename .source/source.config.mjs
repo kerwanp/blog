@@ -28,7 +28,8 @@ var caseStudies = defineCollections({
   schema: frontmatterSchema.extend({
     date: z.string().date().or(z.date()).optional(),
     type: z.enum(["case-study", "article"]).default("case-study"),
-    description: z.string().optional()
+    description: z.string().optional(),
+    logo: z.string().optional()
   })
 });
 var source_config_default = defineConfig({

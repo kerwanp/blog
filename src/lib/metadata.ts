@@ -10,6 +10,7 @@ export function createMetadata(override: Metadata = {}): Metadata {
   return {
     title,
     description,
+    metadataBase: baseUrl,
     ...override,
     openGraph: {
       type: "website",

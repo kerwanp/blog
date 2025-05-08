@@ -46,7 +46,7 @@ export function generate({
       }}
     >
       <img
-        src={`${baseUrl}/images/og.png`}
+        src={`${baseUrl}images/og.png`}
         width={1200}
         height={630}
         style={{

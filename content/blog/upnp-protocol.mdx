@@ -1,0 +1,126 @@
+---
+title: "UPnP: The art of connecting devices"
+description: Learn how to create 3D animations by using only HTML and CSS.
+date: 2023-09-08
+---
+
+So you built a shiny new mobile app and you want it to chat with your smart camera. Nice! You slap in the camera’s IP address and boom — it works.
+
+**Until… it doesn’t.** One day you restart your router, and suddenly it's like:
+
+> “Who even are you? I don’t know you anymore.”
+
+And if you’ve got multiple cameras? It’s chaos. Like trying to find Waldo in a sea of IP addresses.
+
+So how do the pros do it? How does your app find smart devices automagically, no matter what?
+
+**🎉 Welcome to the wonderful world of UPnP!** — aka “plug me in and let me party on the network.”
+
+It’s a protocol used in almost all smart home gear (Philips Hue, Google Nest, the fancy fridge that tweets when the milk’s gone bad… you name it). Let’s dive in — no scary technical stuff, promise!
+
+## 🧠 UPnP in a nutshell: "I'm here!!"
+
+When a smart device joins a network, it yells out:
+
+```
+“Hey everyone! I’m a smart lightbulb!”
+“Here’s my IP: 192.168.1.12 💅”
+“My unique ID is 56a5c464-24eb-485a-8825-920a5a6a0e0f — don’t wear it out.”
+“I’m version 1.12 ✨”
+“My API lives on port 3200 — come visit!”
+```
+
+And just like that, every other device on the network knows how to talk to it. No drama, no manual config.
+
+## Let’s build a (not-so-bright) smart bulb
+
+We’ll play with Node.js and a little library called [node-ssdp](https://www.npmjs.com/package/node-ssdp).
+
+### 💡 The Smart Lightbulb (aka “the fake server”)
+
+Let's write the code that will be living in your Smart Lightbulb.
+It is a simple HTTP server with a `/toggle` endpoint that can be called to turn the light on or off.
+
+<Callout type="warn">
+
+Please, don't use Node.js in low-power devices like lightbulbs. Please, don't.
+
+</Callout>
+
+```ts
+import express from "express";
+
+const port = 3200;
+const app = express();
+
+// Toggle the bulb (or pretend to)
+app.post("/toggle", (req, res) => {
+  toggleTheLight();
+  res.send("Toggled!");
+});
+
+app.listen(port);
+```
+
+Then we want to start the UPnP server that can broadcast our lightbulb precense to the network.
+
+```ts
+import { Server } from "node-ssdp";
+
+const server = new Server({
+  udn: "uuid:56a5c464-24eb-485a-8825-920a5a6a0e0f",
+});
+
+server.addUSN("urn:schemas-upnp-org:service:bulb:1.12");
+```
+
+The `UDN` is like the social security number of your Lightbulb. It’s unique to the smart object and will allow other devices to identify it after restarts.
+
+And the `USN`? That’s how it tells the world, “Hey, I’m a bulb. A fabulous one. Version 1.12, thank you very much.”
+
+### 📱 The Mobile App
+
+Let's now write the code for our mobile app that can turn on our lightbulb using it's `/toggle` HTTP endpoint.
+
+```ts
+const devices = [];
+
+function toggleTheLight() {
+  for (const device of devices) {
+    axios.post(`http://${device.address}:3200/toggle`);
+  }
+}
+```
+
+We now need to discover our Lightbulbs on the network to fill our `devices`. We will use the same `node-ssdp` library by instanciating a client.
+
+```ts
+import { Client } from "node-ssdp";
+
+const client = new Client();
+
+client.on("response", function (headers, statusCode, rinfo) {
+  devices.push({
+    address: rinfo.address,
+    uuid: headers.USN,
+  });
+});
+
+client.search("urn:schemas-upnp-org:service:bulb:*");
+```
+
+When using `client.search` the app will sends out a search like:
+
+> “Yo, any bulbs around? I’m not picky.”
+
+And all the bulbs will shout back. We can then collect their information to interact with them and turn on the light. (Or make a disco.)
+
+## Real-Life Use Case
+
+If you are interested to discover my work I wrote a case study about my mission for **Lacoste** where I built a [cinema shopping experience](/case-studies/lacoste-showroom).
+
+## Conlusion
+
+Asking your user to manually enter the IP address of their smart devices is like asking them to read the TOS. Ain’t nobody got time for that!
+
+UPnP is the magic sauce that makes smart devices discoverable and easy to connect. It’s like the friendly neighbor who always knows where the party is at.

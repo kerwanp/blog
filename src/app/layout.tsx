@@ -9,6 +9,7 @@ import BookButton from "../components/book-button";
 import AnimatedGridPattern from "@/components/animated-grid-pattern";
 import { createMetadata } from "@/lib/metadata";
 import { Providers } from "./layout.client";
+import { Analytics } from "@vercel/analytics/next";
 
 const sans = Comfortaa({
   variable: "--font-sans",
@@ -45,6 +46,7 @@ export default function RootLayout({
           <main className="min-h-screen">{children}</main>
           <Footer />
           <BookButton />
+          <Analytics />
         </Providers>
       </body>
     </html>
